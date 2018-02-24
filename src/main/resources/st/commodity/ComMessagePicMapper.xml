@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="st.commodity.mapper.ComMessagePicMapper">
+
+	<!-- 商品信息图片表（id，商品信息表主键，url） -->
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="st.commodity.model.ComMessagePicModel">
+		<result column="id" property="id" />
+		<result column="com_id" property="comId" />
+		<result column="url_a" property="urla" />
+		<result column="url_b" property="urlb" />
+		<result column="url_c" property="urlc" />
+		<result column="url_d" property="urld" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="creator" property="creator" />
+		<result column="updater" property="updater" />
+		<result column="isdelete" property="isdelete" />
+		<result column="iseffect" property="iseffect" />
+	</resultMap>
+
+	<!-- students table all fields -->
+	<sql id="Base_Column_List">
+		id,com_id,url_a,url_b,url_c,url_d,create_time,update_time,creator,updater,isdelete,iseffect
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="comId != null and comId != ''">
+			and com_id = #{comId}
+		</if>
+		<if test="urla != null and urla != ''">
+			and url_a = #{urla}
+		</if>
+		<if test="urlb != null and urlb != ''">
+			and url_b = #{urlb}
+		</if>
+		<if test="urlc != null and urlc != ''">
+			and url_c = #{urlc}
+		</if>
+		<if test="urld != null and urld != ''">
+			and url_d = #{urld}
+		</if>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Object">
+		insert into
+		st_mall.com_mes_pic
+		(com_id,url_a,url_b,url_c,url_d,create_time,update_time,creator,updater,isdelete,iseffect)
+		values(#{comId},#{urla},#{urlb},#{urlc},#{urld},now(),#{updateTime},#{creator},#{updater},#{isdelete},#{iseffect})
+	</insert>
+	
+		<!-- 根据id，删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from com_mes_pic where id =
+		#{id}
+	</delete>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update
+		st_mall.com_mes_pic set
+		url_a=#{urla},url_b=#{urlb},url_c=#{urlc},url_d=#{urld},create_time=#{createTime},update_time=now(),creator=#{creator},updater=#{updater},isdelete=#{isdelete},iseffect=#{iseffect}
+		where
+		com_id=
+		#{comId}
+	</update>
+
+	<!-- 根据id查询 -->
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.com_mes_pic where id = #{id}
+	</select>
+
+	<!-- 根据条件查询 -->
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.com_mes_pic
+		<include refid="Example_Where_Clause" />
+	</select>
+
+</mapper>

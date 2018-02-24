@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="st.user.mapper.UserAddressMapper">
+
+	<!-- 收货地址表(id，userid，收件人，电话，省，市，区，详细地址) -->
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="st.user.model.UserAddressModel">
+		<result column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_sheng" property="userSheng" />
+		<result column="user_shi" property="userShi" />
+		<result column="user_qu" property="userQu" />
+		<result column="user_add" property="userAddress" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="creator" property="creator" />
+		<result column="updater" property="updater" />
+		<result column="isdelete" property="isdelete" />
+		<result column="iseffect" property="iseffect" />
+		<result column="userShengname" property="userShengname" />
+		<result column="userShiname" property="userShiname" />
+		<result column="userQuname" property="userQuname" />
+	</resultMap>
+
+	<!-- students table all fields -->
+	<sql id="Base_Column_List">
+		id,user_id,user_name,user_sheng,user_shi,user_qu,user_add,create_time,update_time,creator,updater,isdelete,iseffect
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="userId != null">
+			and user_id = #{userId}
+		</if>
+
+		<if test="userName != null and userName != ''">
+			and user_name = #{userName}
+		</if>
+		<if test="userSheng != null and userSheng != ''">
+			and user_sheng = #{userSheng}
+		</if>
+		<if test="userShi != null and userShi != ''">
+			and user_shi = #{userShi}
+		</if>
+		<if test="userQu != null and userQu != ''">
+			and user_qu = #{userQu}
+		</if>
+		<if test="userAddress != null and userAddress != ''">
+			and user_add = #{userAddress}
+		</if>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Object">
+		insert into
+		st_mall.user_add
+		(user_id,user_name,user_sheng,user_shi,user_qu,user_add,create_time,update_time,creator,updater,isdelete,iseffect)
+		values(#{userId},#{userName},#{userSheng},#{userShi},#{userQu},#{userAddress},now(),#{updateTime},#{creator},#{updater},#{isdelete},#{iseffect})
+	</insert>
+
+	<!-- 根据id，删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from st_mall.user_add
+		where id =
+		#{id}
+	</delete>
+
+	<!-- 根据number题号，修改记录 -->
+	<update id="update" parameterType="Object">
+		update
+		st_mall.user_add set
+		user_id=#{userId},user_name=#{userName},user_sheng=#{userSheng},user_shi=#{userShi},user_qu=#{userQu},user_add=#{userAddress},update_time=now()
+		where
+		id=
+		#{id}
+	</update>
+
+	<!-- 根据id查询 -->
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.user_add where id = #{id}
+	</select>
+
+	<!-- 根据条件查询 系统用户 -->
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		,
+		(select name from st_mall.dic d where d.code =user_sheng )
+		userShengname
+		,
+		(select name from st_mall.dic d where d.code =user_shi )
+		userShiname
+		,
+		(select name from st_mall.dic d where d.code =user_qu )
+		userQuname
+		from st_mall.user_add
+		<include refid="Example_Where_Clause" />
+	</select>
+	<!-- 系统用户 列表总数 -->
+	<select id="selectCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		select count(1) from st_mall.user_add
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="st.common.mapper.DictionaryMapper">
+
+	<!-- 字典表/基础数据表（id，code,name，parentcode,type） -->
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="st.common.model.DictionaryModel">
+		<result column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="par_code" property="parentCode" />
+		<result column="type" property="type" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="creator" property="creator" />
+		<result column="updater" property="updater" />
+		<result column="isdelete" property="isdelete" />
+		<result column="iseffect" property="iseffect" />
+	</resultMap>
+
+	<!-- students table all fields -->
+	<sql id="Base_Column_List">
+		id,code,name,par_code,type,create_time,update_time,creator,updater,isdelete,iseffect
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="code != null and code != ''">
+			and code = #{code}
+		</if>
+		<if test="name != null and name != ''">
+			and name = #{name}
+		</if>
+		<if test="parentCode != null and parentCode != ''">
+			and par_code = #{parentCode}
+		</if>
+		<if test="type != null and type != ''">
+			and type = #{type}
+		</if>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Object">
+		insert into
+		st_mall.dic
+		(code,name,par_code,type,create_time,update_time,creator,updater,isdelete,iseffect)
+		values(#{code},#{name},#{parentCode},#{type},now(),#{updateTime},#{creator},#{updater},#{isdelete},#{iseffect})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update
+		st_mall.dic set
+		code=#{code},name=#{name},par_code=#{parentCode},type=#{type},create_time=#{createTime},update_time=now(),creator=#{creator},updater=#{updater},isdelete=#{isdelete},iseffect=#{iseffect}
+		where
+		id=
+		#{id}
+	</update>
+	<!-- 根据id查询 -->
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.dic where id = #{id}
+	</select>
+
+	<!-- 根据条件查询 -->
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.dic
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

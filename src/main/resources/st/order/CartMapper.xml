@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="st.order.mapper.CartMapper">
+
+	<!-- 购物车表（id,用户主键，商品主键，数量） -->
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="st.order.model.CartModel">
+		<result column="id" property="id" />
+		<result column="com_id" property="comId" />
+		<result column="user_id" property="userId" />
+		<result column="com_num" property="comNum" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="creator" property="creator" />
+		<result column="updater" property="updater" />
+		<result column="isdelete" property="isdelete" />
+		<result column="iseffect" property="iseffect" />
+	</resultMap>
+
+	<!-- students table all fields -->
+	<sql id="Base_Column_List">
+		id,com_id,user_id,com_num,create_time,update_time,creator,updater,isdelete,iseffect
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="comId != null">
+				and com_id = #{comId}
+			</if>
+			<if test="userId != null">
+				and user_id = #{userId}
+			</if>
+			<if test="comNum != null and comNum != ''">
+				and com_num = #{comNum}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Object">
+		insert into
+		st_mall.com_car
+		(com_id,user_id,com_num,create_time,update_time,creator,updater,isdelete,iseffect)
+		values(#{comId},#{userId},#{comNum},now(),#{updateTime},#{creator},#{updater},#{isdelete},#{iseffect})
+	</insert>
+
+	<!-- 根据id，删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from com_car where id =
+		#{id}
+	</delete>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update
+		st_mall.com_car set
+		com_id=#{comId},user_id=#{userId},com_num=#{comNum},create_time=#{createTime},update_time=now(),creator=#{creator},updater=#{updater},isdelete=#{isdelete},iseffect=#{iseffect}
+		where
+		id=
+		#{id}
+	</update>
+
+	<update id="updateActive" parameterType="Object">
+		update st_mall.com_car set
+		<trim suffixOverrides=",">
+			<if test="comId != null ">
+				com_id = #{comId},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId},
+			</if>
+			<if test="comNum != null ">
+				com_num = #{comNum},
+			</if>
+			<if test="updateTime != null ">
+				update_time = now(),
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+
+
+
+	<!-- 根据id查询 -->
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.com_car where id = #{id}
+	</select>
+
+	<!-- 根据条件查询 -->
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.com_car
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 系统用户 列表总数 -->
+	<select id="selectCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		select count(1) from st_mall.com_car
+		<include refid="Example_Where_Clause" />
+	</select>
+
+</mapper>

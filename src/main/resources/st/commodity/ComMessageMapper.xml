@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="st.commodity.mapper.ComMessageMapper">
+
+
+	<!-- 商品信息表(id，商品名称，code,单价，描述，库存，卖家主键，url，状态，商品分类表主键) -->
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="st.commodity.model.ComMessageModel">
+		<result column="id" property="id" />
+		<result column="com_name" property="comName" />
+		<result column="com_code" property="comCode" />
+		<result column="com_pri" property="comPrice" />
+		<result column="com_descr" property="comDescr" />
+		<result column="com_rep" property="comRepository" />
+		<result column="sel_id" property="sellerId" />
+		<result column="com_sta" property="comStatus" />
+		<result column="com_cla_id" property="comClassifyId" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="creator" property="creator" />
+		<result column="updater" property="updater" />
+		<result column="isdelete" property="isdelete" />
+		<result column="iseffect" property="iseffect" />
+		<result column="claname" property="claname" />
+		<result column="urla" property="urla" />
+		<result column="urlb" property="urlb" />
+		<result column="urlc" property="urlc" />
+		<result column="urld" property="urld" />
+	</resultMap>
+
+	<!-- students table all fields -->
+	<sql id="Base_Column_List">
+		id,com_name,com_code,com_pri,com_descr,com_rep,sel_id,com_sta,com_cla_id,create_time,update_time,creator,updater,isdelete,iseffect
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="comName != null and comName != ''">
+			and com_name like CONCAT('%', #{comName}, '%')
+		</if>
+		<if test="comCode != null and comCode != ''">
+			and com_code = #{comCode}
+		</if>
+		<if test="comPrice != null">
+			and com_pri = #{comPrice}
+		</if>
+
+		<if test="comDescr != null and comDescr != ''">
+			and com_descr = #{comDescr}
+		</if>
+		<if test="comRepository != null">
+			and com_rep = #{comRepository}
+		</if>
+		<if test="sellerId != null">
+			and sel_id = #{sellerId}
+		</if>
+
+		<if test="comStatus != null and comStatus != ''">
+			and com_sta = #{comStatus}
+		</if>
+		<if test="comClassifyId != null and comClassifyId != ''">
+			and com_cla_id = #{comClassifyId}
+		</if>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert
+		into
+		st_mall.com_mes
+		(com_name,com_code,com_pri,com_descr,com_rep,sel_id,com_sta,com_cla_id,create_time,update_time,creator,updater,isdelete,iseffect)
+		values(#{comName},#{comCode},#{comPrice},#{comDescr},#{comRepository},#{sellerId},#{comStatus},#{comClassifyId},now(),#{updateTime},#{creator},#{updater},#{isdelete},#{iseffect})
+	</insert>
+		<!-- 根据id，删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from com_mes where id =
+		#{id}
+	</delete>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update
+		st_mall.com_mes set
+		com_name=#{comName},com_code=#{comCode},com_pri=#{comPrice},com_descr=#{comDescr},com_rep=#{comRepository},sel_id=#{sellerId},com_sta=#{comStatus},com_cla_id=#{comClassifyId},update_time=now(),creator=#{creator},updater=#{updater},isdelete=#{isdelete},iseffect=#{iseffect}
+		where
+		id=
+		#{id}
+	</update>
+
+	<!-- 根据id查询 -->
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		,
+		(select url_a from st_mall.com_mes_pic cp where cp.com_id = cm.id )
+		urla
+		,
+		(select url_b from st_mall.com_mes_pic cp where cp.com_id = cm.id )
+		urlb
+		,
+		(select url_c from st_mall.com_mes_pic cp where cp.com_id = cm.id )
+		urlc
+		,
+		(select url_d from st_mall.com_mes_pic cp where cp.com_id = cm.id )
+		urld
+		from st_mall.com_mes cm where id = #{id}
+	</select>
+
+	<!-- 根据条件查询 -->
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		,
+		(select url_a from st_mall.com_mes_pic cp where cp.com_id = cm.id )
+		urla
+		,
+		(select url_b from st_mall.com_mes_pic cp where cp.com_id = cm.id )
+		urlb
+		,
+		(select url_c from st_mall.com_mes_pic cp where cp.com_id = cm.id )
+		urlc
+		,
+		(select url_d from st_mall.com_mes_pic cp where cp.com_id = cm.id )
+		urld
+		from st_mall.com_mes cm
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 根据条件 分页查询 -->
+	<select id="selectModel" resultMap="BaseResultMap"
+		parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		,
+		(select cla_name from st_mall.com_cla cc where cc.id =com_cla_id )
+		claname
+		,
+		(select url_a from st_mall.com_mes_pic cp where cp.com_id = cm.id )
+		urla
+		from st_mall.com_mes cm
+		<include refid="Example_Where_Clause" />
+		<if
+			test="pager.mysqlQueryCondition != null and pager.mysqlQueryCondition != ''">
+			${pager.mysqlQueryCondition}
+		</if>
+	</select>
+	<!-- 系统用户 列表总数 -->
+	<select id="selectCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		select count(1) from st_mall.com_mes
+		<include refid="Example_Where_Clause" />
+	</select>
+
+</mapper>

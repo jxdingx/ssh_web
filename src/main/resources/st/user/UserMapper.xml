@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="st.user.mapper.UserMapper">
+
+	<!-- 用户表（id，账号，密码，用户名，是否为user） -->
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="st.user.model.UserModel">
+		<result column="id" property="id" />
+		<result column="username" property="userName" />
+		<result column="userpass" property="userPass" />
+		<result column="name" property="name" />
+		<result column="isuser" property="isuser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="creator" property="creator" />
+		<result column="updater" property="updater" />
+		<result column="isdelete" property="isdelete" />
+		<result column="iseffect" property="iseffect" />
+	</resultMap>
+
+	<!-- students table all fields -->
+	<sql id="Base_Column_List">
+		id,username,userpass,name,isuser,create_time,update_time,creator,updater,isdelete,iseffect
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="userName != null and userName != ''">
+			and username = #{userName}
+		</if>
+		<if test="userPass != null and userPass != ''">
+			and userpass = #{userPass}
+		</if>
+		<if test="name != null and name != ''">
+			and name = #{name}
+		</if>
+		<if test="isuser != null and isuser != ''">
+			and isuser = #{isuser}
+		</if>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Object">
+		insert into
+		st_mall.user
+		(username,userpass,name,isuser,create_time,update_time,creator,updater,isdelete,iseffect)
+		values(#{userName},#{userPass},#{name},#{isuser},now(),#{updateTime},#{creator},#{updater},#{isdelete},#{iseffect})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update
+		st_mall.user set
+		username=#{userName},userpass=#{userPass},name=#{name},isuser=#{isuser},create_time=#{createTime},update_time=now(),creator=#{creator},updater=#{updater},isdelete=#{isdelete},iseffect=#{iseffect}
+		where
+		id=
+		#{id}
+	</update>
+
+
+	<!-- 根据id查询 -->
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.user where id = #{id}
+	</select>
+
+
+	<!-- 根据条件查询 系统用户 -->
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.user
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

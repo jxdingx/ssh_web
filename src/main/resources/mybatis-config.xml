@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<typeAliases>
+
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="st/commodity/ComClassifyMapper.xml" />
+		<mapper resource="st/commodity/ComMessageMapper.xml" />
+		<mapper resource="st/commodity/ComMessagePicMapper.xml" />
+		<mapper resource="st/common/DictionaryMapper.xml" />
+		<mapper resource="st/order/CartMapper.xml" />
+		<mapper resource="st/order/OrderMessageMapper.xml" />
+		<mapper resource="st/order/OrderMapper.xml" />
+		<mapper resource="st/user/UserAddressMapper.xml" />
+		<mapper resource="st/user/UserMapper.xml" />
+
+		<mapper resource="st/system/mybatis/SysDictMapper.xml" />
+
+	</mappers>
+
+</configuration>

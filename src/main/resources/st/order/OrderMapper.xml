@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="st.order.mapper.OrderMapper">
+
+
+	<!-- 订单表（） -->
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="st.order.model.OrderModel">
+		<result column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="add_id" property="addressId" />
+		<result column="ord_sta" property="orderStatus" />
+		<result column="create_time" property="createTime" />
+		<result column="order_code" property="orderCode" />
+	</resultMap>
+	
+	
+	<!-- students table all fields -->
+	<sql id="Base_Column_List">
+		id,user_id,add_id,ord_sta,create_time,order_code
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="userId != null">
+			and user_id = #{userId}
+		</if>
+		<if test="addressId != null">
+			and add_id = #{addressId}
+		</if>
+		
+		<if test="orderCode != null and orderCode != ''">
+			and order_code = #{orderCode}
+		</if>
+		
+		<if test="orderStatus != null and orderStatus != ''">
+			and ord_sta = #{orderStatus}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			and create_time = #{createTime}
+		</if>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Object">
+		insert into
+		st_mall.order
+		(user_id,add_id,ord_sta,create_time,order_code)
+		values(#{userId},#{addressId},#{orderStatus},now(),#{orderCode})
+	</insert>
+
+	<!-- 根据id，删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from st_mall.order where id =
+		#{id}
+	</delete>
+
+	<!-- 根据条件查询 -->
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.order
+		<include refid="Example_Where_Clause" />
+	</select>
+    <!-- 根据id查询 -->
+	 <select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.order where id = #{id}
+	</select>
+</mapper>

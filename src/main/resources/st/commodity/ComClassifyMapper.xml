@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="st.commodity.mapper.ComClassifyMapper">
+
+	<!-- 商品分类表（id,类别名称,code,descr,上一级code） -->
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="st.commodity.model.ComClassifyModel">
+		<result column="id" property="id" />
+		<result column="cla_name" property="claName" />
+		<result column="code" property="code" />
+		<result column="descr" property="descr" />
+		<result column="par_code" property="parCode" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="creator" property="creator" />
+		<result column="updater" property="updater" />
+		<result column="isdelete" property="isdelete" />
+		<result column="iseffect" property="iseffect" />
+	</resultMap>
+
+	<!-- students table all fields -->
+	<sql id="Base_Column_List">
+		id,cla_name,code,descr,par_code,create_time,update_time,creator,updater,isdelete,iseffect
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="claName != null and claName != ''">
+			and cla_name = #{claName}
+		</if>
+		<if test="code != null and code != ''">
+			and code = #{code}
+		</if>
+		<if test="descr != null and descr != ''">
+			and descr = #{descr}
+		</if>
+		<if test="parCode != null and parCode != ''">
+			and par_code = #{parCode}
+		</if>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="Object">
+		insert into
+		st_mall.com_cla
+		(cla_name,code,descr,par_code,create_time,update_time,creator,updater,isdelete,iseffect)
+		values(#{claName},#{code},#{descr},#{parCode},now(),#{updateTime},#{creator},#{updater},#{isdelete},#{iseffect})
+	</insert>
+
+	<!-- 根据id题号，修改记录 -->
+	<update id="update" parameterType="Object">
+		update
+		st_mall.com_cla set
+		cla_name=#{claName},code=#{code},descr=#{descr},par_code=#{parCode},create_time=#{createTime},update_time=now(),creator=#{creator},updater=#{updater},isdelete=#{isdelete},iseffect=#{iseffect}
+		where
+		id=
+		#{id}
+	</update>
+
+	<!-- 根据id查询 -->
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.com_cla where id = #{id}
+	</select>
+
+	<!-- 根据条件查询 -->
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from st_mall.com_cla
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 系统用户 列表总数 -->
+	<select id="selectCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		select count(1) from st_mall.com_cla
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "http://toolkit.alibaba-inc.com/dtd/log4j/log4j.dtd">  
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/' >       
+          
+    <appender name="myConsole" class="org.apache.log4j.ConsoleAppender">       
+        <layout class="org.apache.log4j.PatternLayout">       
+            <param name="ConversionPattern"          
+                value="[%d{yyyy-MM-dd HH:mm:ssS\} %-5p] [%t - %r] [%l] - %m%n" />   
+<!-- %l: 输出日志事件的发生位置，相当于%C.%M(%F:%L)的组合,包括类目名、发生的线程，以及在代码中的行数。举例：Testlog4.main(TestLog4.java:10)。     -->
+        </layout>       
+        <!--过滤器设置输出的级别-->       
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">       
+            <param name="levelMin" value="debug" />       
+            <param name="levelMax" value="FATAL" />       
+            <param name="AcceptOnMatch" value="true" />       
+        </filter>       
+    </appender>   
+    
+    <appender name="myDailyRollingFileAppender" class="org.apache.log4j.DailyRollingFileAppender">       
+        <param name="File" value="d:/stlog/stlog_now.log" />         
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+        <param name="encoding" value="UTF-8"/>       
+        <param name="Append" value="false"/>       
+        <layout class="org.apache.log4j.PatternLayout">       
+         	<param name="ConversionPattern"         
+            	value="[%d{yyyy-MM-dd HH:mm:ssS\} %-5p] [%l] [%t - %r] - %m%n" />        
+        </layout>         
+    </appender>           
+          
+    <!-- 根logger的设置-->       
+    <logger name="com.hainur" additivity="false">  
+        <level value="debug"/>  
+        <appender-ref ref="myConsole"/>       
+        <appender-ref ref="myDailyRollingFileAppender"/>      
+    </logger>       
+    <root>  
+        <level value="WARN"/>  
+        <appender-ref ref="myConsole"/>  
+    </root>  
+</log4j:configuration>
